@@ -1,0 +1,237 @@
+\documentclass[DIV=13, landscape]{scrartcl}
+\usepackage{graphicx, cals}
+\usepackage{changepage}
+\usepackage{pdflscape}
+\usepackage[sgvnames]{xcolor}
+
+\begin{document}
+
+% Remove Page Number
+\thispagestyle{empty}
+
+\textbf{Rota for: 20/07/2020 - 02/08/2020}
+
+\begin{calstable}[c]
+	\makeatletter
+	
+	% Define cell border widths
+	\def\cals@cs@width{1pt}
+	\def\cals@rs@width{1pt}
+	
+	% Define frame border widths
+	\def\cals@framers@width{1pt}
+	\def\cals@framecs@width{1pt}
+	
+	% Define cell background colour to default empty
+	\def\cals@bgcolor{}
+	
+	% Handle column sizing.	
+	\colwidths{
+		{\dimexpr(\columnwidth)/78*30\relax} % Date Column Size
+		{\dimexpr(\columnwidth)/78*8\relax} % Task 1 Column Size
+		{\dimexpr(\columnwidth)/78*8\relax} % Task 2 Column Size
+		{\dimexpr(\columnwidth)/78*8\relax} % Task 3 Column Size
+		{\dimexpr(\columnwidth)/78*8\relax} % Task 4 Column Size
+		{\dimexpr(\columnwidth)/78*8\relax} % Task 5 Column Size
+		{\dimexpr(\columnwidth)/78*8\relax} % Task 6 Column Size
+	}
+	
+	% Header rows
+	\thead{
+		% Header row 1 
+		\brow
+			\nullcell{tlr}
+			
+			\nullcell{tlb}
+			\nullcell{tb}
+			\nullcell{tb}
+			\nullcell{tb}
+			\nullcell{tb}
+			\nullcell{trb} \alignC \spancontent{\textbf{Tasks}}
+		\erow
+		
+		% Header row 2
+		\brow
+			\nullcell{tlbr} \alignC \spancontent{\vfill \textbf{Date}}
+			
+			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Change Bins}}} \alignC
+			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Sweep Floor}}} \alignC
+			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe Surfaces}}} \alignC
+			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe appliances}}} \alignC
+			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Clean Microwave}}} \alignC
+			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Handle Dishwasher}}} \alignC
+		\erow
+	}
+	
+	% Body Rows
+	
+	% Body row 1
+	\brow
+		\cell{\textbf{20/07/2020}}
+		
+		\cell{A}
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+	\erow
+	
+	% Body row 2
+	\brow
+		\cell{\textbf{21/07/2020}}
+		
+		\cell{V}
+		\cell{A}
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+	\erow
+	
+	% Body row 3
+	\brow
+		\cell{\textbf{22/07/2020}}
+		
+		\cell{J}
+		\cell{V}
+		\cell{A}
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+	\erow
+	
+	% Body row 4
+	\brow
+		\cell{\textbf{23/07/2020}}
+		
+		\cell{G}
+		\cell{J}
+		\cell{V}
+		\cell{A}
+		\cell{F}
+		\cell{So}
+	\erow
+	
+	% Body row 5
+	\brow
+		\cell{\textbf{24/07/2020}}
+		
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+		\cell{V}
+		\cell{A}
+		\cell{F}
+	\erow
+	
+	% Body row 6
+	\brow
+		\cell{\textbf{25/07/2020}}
+		
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+		\cell{V}
+		\cell{A}
+	\erow
+	
+	% Body row 7
+	\brow
+		\cell{\textbf{26/07/2020}}
+		
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+		\cell{V}
+	\erow
+	
+	% Body row 8
+	\brow
+		\cell{\textbf{27/07/2020}}
+		
+		\cell{A}
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+	\erow
+	
+	% Body row 9
+	\brow
+		\cell{\textbf{28/07/2020}}
+		
+		\cell{V}
+		\cell{A}
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+	\erow
+	
+	% Body row 10
+	\brow
+		\cell{\textbf{29/07/2020}}
+		
+		\cell{J}
+		\cell{V}
+		\cell{A}
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+	\erow
+	
+	% Body row 11
+	\brow
+		\cell{\textbf{30/07/2020}}
+		
+		\cell{G}
+		\cell{J}
+		\cell{V}
+		\cell{A}
+		\cell{F}
+		\cell{So}
+	\erow
+	
+	% Body row 12
+	\brow
+		\cell{\textbf{31/07/2020}}
+		
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+		\cell{V}
+		\cell{A}
+		\cell{F}
+	\erow
+	
+	% Body row 13
+	\brow
+		\cell{\textbf{01/08/2020}}
+		
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+		\cell{V}
+		\cell{A}
+	\erow
+	
+	% Body row 14
+	\brow
+		\cell{\textbf{02/08/2020}}
+		
+		\cell{F}
+		\cell{So}
+		\cell{Si}
+		\cell{G}
+		\cell{J}
+		\cell{V}
+	\erow
+\end{calstable}
+
+\end{document}
