@@ -4,12 +4,21 @@
 \usepackage{pdflscape}
 \usepackage[british]{babel}
 \usepackage[useregional, calc, datesep=/]{datetime2}
+\usepackage{pgffor}
+\usepackage{arrayjob}
+\usepackage{intcalc}
 
-
-% Update date here to change start date of rota (2 weeks). ISO Format
+% Update date here to change start date of rota. ISO Format
 \newcommand{\InitialDate}{2020-07-20}
 
 \DTMsavedate{InitialDate}{\InitialDate}
+
+% Update here to change number of days to display past initial date.
+\newcommand{\DaysToDisplay}{13}
+
+% Initial array order for initial date.
+\newarray\initials
+\readarray{initials}{A&F&So&Si&G&J&V}
 
 % Function: Add Days
 \newcount\daycount
@@ -25,7 +34,7 @@
 % Remove Page Number
 \thispagestyle{empty}
 
-\textbf{Rota for: \DTMusedate{InitialDate} - \AddDays{\InitialDate}{13}}
+\textbf{Rota for: \DTMusedate{InitialDate} - \AddDays{\InitialDate}{\DaysToDisplay}}
 
 \begin{calstable}[c]
 	\makeatletter
@@ -82,172 +91,19 @@
 	% Body Rows
 	
 	% Body row 1
-	\brow
-		\cell{\textbf{\DTMusedate{InitialDate}}}
-		
-		\cell{A}
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-	\erow
-	
-	% Body row 2
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{1}}}
-		
-		\cell{V}
-		\cell{A}
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-	\erow
-	
-	% Body row 3
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{2}}}
-		
-		\cell{J}
-		\cell{V}
-		\cell{A}
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-	\erow
-	
-	% Body row 4
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{3}}}
-		
-		\cell{G}
-		\cell{J}
-		\cell{V}
-		\cell{A}
-		\cell{F}
-		\cell{So}
-	\erow
-	
-	% Body row 5
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{4}}}
-		
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-		\cell{V}
-		\cell{A}
-		\cell{F}
-	\erow
-	
-	% Body row 6
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{5}}}
-		
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-		\cell{V}
-		\cell{A}
-	\erow
-	
-	% Body row 7
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{6}}}
-		
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-		\cell{V}
-	\erow
-	
-	% Body row 8
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{7}}}
-		
-		\cell{A}
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-	\erow
-	
-	% Body row 9
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{8}}}
-		
-		\cell{V}
-		\cell{A}
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-	\erow
-	
-	% Body row 10
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{9}}}
-		
-		\cell{J}
-		\cell{V}
-		\cell{A}
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-	\erow
-	
-	% Body row 11
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{10}}}
-		
-		\cell{G}
-		\cell{J}
-		\cell{V}
-		\cell{A}
-		\cell{F}
-		\cell{So}
-	\erow
-	
-	% Body row 12
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{11}}}
-		
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-		\cell{V}
-		\cell{A}
-		\cell{F}
-	\erow
-	
-	% Body row 13
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{12}}}
-		
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-		\cell{V}
-		\cell{A}
-	\erow
-	
-	% Body row 14
-	\brow
-		\cell{\textbf{\AddDays{\InitialDate}{13}}}
-		
-		\cell{F}
-		\cell{So}
-		\cell{Si}
-		\cell{G}
-		\cell{J}
-		\cell{V}
-	\erow
+	\foreach \n in {0,...,\DaysToDisplay}
+	{
+		\brow%
+			\cell{\textbf{\AddDays{\InitialDate}{\n}}}
+
+			\cell{\initials(\intcalcNum{\intcalcMod{0 - \n}{7} + 1})}
+			\cell{\initials(\intcalcNum{\intcalcMod{1 - \n}{7} + 1})}
+			\cell{\initials(\intcalcNum{\intcalcMod{2 - \n}{7} + 1})}
+			\cell{\initials(\intcalcNum{\intcalcMod{3 - \n}{7} + 1})}
+			\cell{\initials(\intcalcNum{\intcalcMod{4 - \n}{7} + 1})}
+			\cell{\initials(\intcalcNum{\intcalcMod{5 - \n}{7} + 1})}
+		\erow%
+	}%
 \end{calstable}
 
 \end{document}
