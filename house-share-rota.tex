@@ -2,14 +2,30 @@
 \usepackage{graphicx, cals}
 \usepackage{changepage}
 \usepackage{pdflscape}
-\usepackage[sgvnames]{xcolor}
+\usepackage[british]{babel}
+\usepackage[useregional, calc, datesep=/]{datetime2}
+
+
+% Update date here to change start date of rota (2 weeks). ISO Format
+\newcommand{\InitialDate}{2020-07-20}
+
+\DTMsavedate{InitialDate}{\InitialDate}
+
+% Function: Add Days
+\newcount\daycount
+\newcommand{\AddDays}[2]{%
+	\DTMsavedate{CurrentDate}{#1}%
+	\DTMsaveddateoffsettojulianday{CurrentDate}{#2}\daycount%
+	\DTMsavejulianday{CurrentDate}{\number\daycount}%
+	\DTMusedate{CurrentDate}%
+}
 
 \begin{document}
 
 % Remove Page Number
 \thispagestyle{empty}
 
-\textbf{Rota for: 20/07/2020 - 02/08/2020}
+\textbf{Rota for: \DTMusedate{InitialDate} - \AddDays{\InitialDate}{13}}
 
 \begin{calstable}[c]
 	\makeatletter
@@ -67,7 +83,7 @@
 	
 	% Body row 1
 	\brow
-		\cell{\textbf{20/07/2020}}
+		\cell{\textbf{\DTMusedate{InitialDate}}}
 		
 		\cell{A}
 		\cell{F}
@@ -79,7 +95,7 @@
 	
 	% Body row 2
 	\brow
-		\cell{\textbf{21/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{1}}}
 		
 		\cell{V}
 		\cell{A}
@@ -91,7 +107,7 @@
 	
 	% Body row 3
 	\brow
-		\cell{\textbf{22/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{2}}}
 		
 		\cell{J}
 		\cell{V}
@@ -103,7 +119,7 @@
 	
 	% Body row 4
 	\brow
-		\cell{\textbf{23/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{3}}}
 		
 		\cell{G}
 		\cell{J}
@@ -115,7 +131,7 @@
 	
 	% Body row 5
 	\brow
-		\cell{\textbf{24/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{4}}}
 		
 		\cell{Si}
 		\cell{G}
@@ -127,7 +143,7 @@
 	
 	% Body row 6
 	\brow
-		\cell{\textbf{25/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{5}}}
 		
 		\cell{So}
 		\cell{Si}
@@ -139,7 +155,7 @@
 	
 	% Body row 7
 	\brow
-		\cell{\textbf{26/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{6}}}
 		
 		\cell{F}
 		\cell{So}
@@ -151,7 +167,7 @@
 	
 	% Body row 8
 	\brow
-		\cell{\textbf{27/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{7}}}
 		
 		\cell{A}
 		\cell{F}
@@ -163,7 +179,7 @@
 	
 	% Body row 9
 	\brow
-		\cell{\textbf{28/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{8}}}
 		
 		\cell{V}
 		\cell{A}
@@ -175,7 +191,7 @@
 	
 	% Body row 10
 	\brow
-		\cell{\textbf{29/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{9}}}
 		
 		\cell{J}
 		\cell{V}
@@ -187,7 +203,7 @@
 	
 	% Body row 11
 	\brow
-		\cell{\textbf{30/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{10}}}
 		
 		\cell{G}
 		\cell{J}
@@ -199,7 +215,7 @@
 	
 	% Body row 12
 	\brow
-		\cell{\textbf{31/07/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{11}}}
 		
 		\cell{Si}
 		\cell{G}
@@ -211,7 +227,7 @@
 	
 	% Body row 13
 	\brow
-		\cell{\textbf{01/08/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{12}}}
 		
 		\cell{So}
 		\cell{Si}
@@ -223,7 +239,7 @@
 	
 	% Body row 14
 	\brow
-		\cell{\textbf{02/08/2020}}
+		\cell{\textbf{\AddDays{\InitialDate}{13}}}
 		
 		\cell{F}
 		\cell{So}
