@@ -8,18 +8,6 @@
 \usepackage{arrayjob}
 \usepackage{intcalc}
 
-% Update date here to change start date of rota. ISO Format
-\newcommand{\InitialDate}{2020-07-20}
-
-\DTMsavedate{InitialDate}{\InitialDate}
-
-% Update here to change number of days to display past initial date.
-\newcommand{\DaysToDisplay}{13}
-
-% Initial array order for initial date.
-\newarray\initials
-\readarray{initials}{A&F&So&Si&G&J&V}
-
 % Function: Add Days
 \newcount\daycount
 \newcommand{\AddDays}[2]{%
@@ -27,14 +15,37 @@
 	\DTMsaveddateoffsettojulianday{CurrentDate}{#2}\daycount%
 	\DTMsavejulianday{CurrentDate}{\number\daycount}%
 	\DTMusedate{CurrentDate}%
-}
+}%
+
+% Update date here to change initial date of rota. ISO Format.
+% The initial date is the start date of the first rota produced.
+\newcommand{\InitialDate}{2020-07-20}
+
+\DTMsavedate{InitialDate}{\InitialDate}
+
+% Initial array order for initial date.
+\newarray\initials
+\readarray{initials}{A&F&So&Si&G&J&V}
+
+% Update date here to change start date of rota. ISO Format.
+% The start date is for the rota being currently produced.
+\newcommand{\StartDate}{2020-07-20}
+
+\DTMsavedate{StartDate}{\StartDate}
+
+% Calculate difference between initial and start to offset array order.
+\newcount\offsetdaycount
+\DTMsaveddatediff{StartDate}{InitialDate}{\offsetdaycount}
+
+% Update here to change number of days to display past initial date.
+\newcommand{\DaysToDisplay}{13}
 
 \begin{document}
 
 % Remove Page Number
 \thispagestyle{empty}
 
-\textbf{Rota for: \DTMusedate{InitialDate} - \AddDays{\InitialDate}{\DaysToDisplay}}
+\textbf{Rota for: \DTMusedate{StartDate} - \AddDays{\StartDate}{\DaysToDisplay}}
 
 \begin{calstable}[c]
 	\makeatletter
@@ -91,16 +102,18 @@
 	% Body Rows
 	\foreach \n in {0,...,\DaysToDisplay}
 	{
-		\brow%
-			\cell{\textbf{\AddDays{\InitialDate}{\n}}}
+		\newcommand{\offsetN}{\intcalcAdd{\n}{\number\offsetdaycount}}	
+	
+		\brow
+			\cell{\textbf{\AddDays{\InitialDate}{\offsetN}}}
 
-			\cell{\initials(\intcalcNum{\intcalcMod{0 - \n}{7} + 1})}
-			\cell{\initials(\intcalcNum{\intcalcMod{1 - \n}{7} + 1})}
-			\cell{\initials(\intcalcNum{\intcalcMod{2 - \n}{7} + 1})}
-			\cell{\initials(\intcalcNum{\intcalcMod{3 - \n}{7} + 1})}
-			\cell{\initials(\intcalcNum{\intcalcMod{4 - \n}{7} + 1})}
-			\cell{\initials(\intcalcNum{\intcalcMod{5 - \n}{7} + 1})}
-		\erow%
+			\cell{\initials(\intcalcAdd{\intcalcMod{0 - \offsetN}{7}}{1})}
+			\cell{\initials(\intcalcAdd{\intcalcMod{1 - \offsetN}{7}}{1})}
+			\cell{\initials(\intcalcAdd{\intcalcMod{2 - \offsetN}{7}}{1})}
+			\cell{\initials(\intcalcAdd{\intcalcMod{3 - \offsetN}{7}}{1})}
+			\cell{\initials(\intcalcAdd{\intcalcMod{4 - \offsetN}{7}}{1})}
+			\cell{\initials(\intcalcAdd{\intcalcMod{5 - \offsetN}{7}}{1})}
+		\erow
 	}%
 \end{calstable}
 
