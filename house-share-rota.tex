@@ -12,7 +12,7 @@
 \newcount\daycount
 \newcommand{\AddDays}[2]{%
 	\DTMsavedate{CurrentDate}{#1}%
-	\DTMsaveddateoffsettojulianday{CurrentDate}{#2}\daycount%
+	\DTMsaveddateoffsettojulianday{CurrentDate}{#2}{\daycount}%
 	\DTMsavejulianday{CurrentDate}{\number\daycount}%
 	\DTMusedate{CurrentDate}%
 }%
@@ -39,82 +39,102 @@
 
 % Update here to change number of days to display past initial date.
 \newcommand{\DaysToDisplay}{13}
+\newcommand{\TotalRows}{\intcalcAdd{\DaysToDisplay}{1}}
+
+% Calculate how many full pages to print (14 rows per page)
+\newcommand{\FullPagesToPrint}{\intcalcDiv{\TotalRows}{14}}
+
+% Calculate how many partial pages to print (Less than 14 rows)
+\newcommand{\PartialPagesToPrint}{\intcalcMin{\intcalcMod{\TotalRows}{14}}{1}}
+
+% Calculate total number of pages
+\newcommand{\TotalPagesToPrint}{\intcalcAdd{\FullPagesToPrint}{\PartialPagesToPrint}}
 
 \begin{document}
 
-% Remove Page Number
-\thispagestyle{empty}
+\makeatletter
 
-\textbf{Rota for: \DTMusedate{StartDate} - \AddDays{\StartDate}{\DaysToDisplay}}
-
-\begin{calstable}[c]
-	\makeatletter
-	
-	% Define cell border widths
-	\def\cals@cs@width{1pt}
-	\def\cals@rs@width{1pt}
-	
-	% Define frame border widths
-	\def\cals@framers@width{1pt}
-	\def\cals@framecs@width{1pt}
-	
-	% Define cell background colour to default empty
-	\def\cals@bgcolor{}
-	
-	% Handle column sizing.	
-	\colwidths{
-		{\dimexpr(\columnwidth)/78*30\relax} % Date Column Size
-		{\dimexpr(\columnwidth)/78*8\relax} % Task 1 Column Size
-		{\dimexpr(\columnwidth)/78*8\relax} % Task 2 Column Size
-		{\dimexpr(\columnwidth)/78*8\relax} % Task 3 Column Size
-		{\dimexpr(\columnwidth)/78*8\relax} % Task 4 Column Size
-		{\dimexpr(\columnwidth)/78*8\relax} % Task 5 Column Size
-		{\dimexpr(\columnwidth)/78*8\relax} % Task 6 Column Size
-	}
-	
-	% Header rows
-	\thead{
-		% Header row 1 
-		\brow
-			\nullcell{tlr}
-			
-			\nullcell{tlb}
-			\nullcell{tb}
-			\nullcell{tb}
-			\nullcell{tb}
-			\nullcell{tb}
-			\nullcell{trb} \alignC \spancontent{\textbf{Tasks}}
-		\erow
+% Define cell border widths
+\def\cals@cs@width{1pt}
+\def\cals@rs@width{1pt}
 		
-		% Header row 2
-		\brow
-			\nullcell{tlbr} \alignC \spancontent{\vfill \textbf{Date}}
-			
-			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Change Bins}}} \alignC
-			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Sweep Floor}}} \alignC
-			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe Surfaces}}} \alignC
-			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe appliances}}} \alignC
-			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Clean Microwave}}} \alignC
-			\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Handle Dishwasher}}} \alignC
-		\erow
-	}
-	
-	% Body Rows
-	\foreach \n in {0,...,\DaysToDisplay}
-	{
-		\newcommand{\offsetN}{\intcalcAdd{\n}{\number\offsetdaycount}}	
-	
-		\brow
-			\cell{\textbf{\AddDays{\InitialDate}{\offsetN}}}
+% Define frame border widths
+\def\cals@framers@width{1pt}
+\def\cals@framecs@width{1pt}
+		
+% Define cell background colour to default empty
+\def\cals@bgcolor{}
 
-			\cell{\initials(\intcalcAdd{\intcalcMod{0 - \offsetN}{7}}{1})}
-			\cell{\initials(\intcalcAdd{\intcalcMod{1 - \offsetN}{7}}{1})}
-			\cell{\initials(\intcalcAdd{\intcalcMod{2 - \offsetN}{7}}{1})}
-			\cell{\initials(\intcalcAdd{\intcalcMod{3 - \offsetN}{7}}{1})}
-			\cell{\initials(\intcalcAdd{\intcalcMod{4 - \offsetN}{7}}{1})}
-			\cell{\initials(\intcalcAdd{\intcalcMod{5 - \offsetN}{7}}{1})}
-		\erow
-	}%
-\end{calstable}
+\foreach \i in {0,...,\intcalcSub{\TotalPagesToPrint}{1}}%
+{
+	% Remove Page Number
+	\thispagestyle{empty}
+	
+	% Calculate lower bound of current rota page.
+	\newcommand{\PageLowerBound}{\intcalcMul{\i}{14}}
+	
+	% Calculate upper bound of current rota page.
+	\newcommand{\PageUpperBound}{\intcalcMin{\intcalcAdd{\PageLowerBound}{13}}{\DaysToDisplay}}
+	
+	\textbf{Rota for: \AddDays{\StartDate}{\PageLowerBound} - \AddDays{\StartDate}{\PageUpperBound}}
+
+	\begin{calstable}[c]
+		
+		% Handle column sizing.	
+		\colwidths{
+			{\dimexpr(\columnwidth)/78*30\relax} % Date Column Size
+			{\dimexpr(\columnwidth)/78*8\relax} % Task 1 Column Size
+			{\dimexpr(\columnwidth)/78*8\relax} % Task 2 Column Size
+			{\dimexpr(\columnwidth)/78*8\relax} % Task 3 Column Size
+			{\dimexpr(\columnwidth)/78*8\relax} % Task 4 Column Size
+			{\dimexpr(\columnwidth)/78*8\relax} % Task 5 Column Size
+			{\dimexpr(\columnwidth)/78*8\relax} % Task 6 Column Size
+		}
+		
+		% Header rows
+		\thead{
+			% Header row 1 
+			\brow
+				\nullcell{tlr}
+				
+				\nullcell{tlb}
+				\nullcell{tb}
+				\nullcell{tb}
+				\nullcell{tb}
+				\nullcell{tb}
+				\nullcell{trb} \alignC \spancontent{\textbf{Tasks}}
+			\erow
+			
+			% Header row 2
+			\brow
+				\nullcell{tlbr} \alignC \spancontent{\vfill \textbf{Date}}
+				
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Change Bins}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Sweep Floor}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe Surfaces}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe appliances}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Clean Microwave}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Handle Dishwasher}}} \alignC
+			\erow
+		}
+		
+		% Body Rows
+		\foreach \j in {\PageLowerBound,...,\PageUpperBound}
+		{
+			\newcommand{\offsetJ}{\intcalcAdd{\j}{\number\offsetdaycount}}	
+		
+			\brow
+				\cell{\textbf{\AddDays{\InitialDate}{\offsetJ}}}
+	
+				\cell{\initials(\intcalcAdd{\intcalcMod{0 - \offsetJ}{7}}{1})}
+				\cell{\initials(\intcalcAdd{\intcalcMod{1 - \offsetJ}{7}}{1})}
+				\cell{\initials(\intcalcAdd{\intcalcMod{2 - \offsetJ}{7}}{1})}
+				\cell{\initials(\intcalcAdd{\intcalcMod{3 - \offsetJ}{7}}{1})}
+				\cell{\initials(\intcalcAdd{\intcalcMod{4 - \offsetJ}{7}}{1})}
+				\cell{\initials(\intcalcAdd{\intcalcMod{5 - \offsetJ}{7}}{1})}
+			\erow
+		}%
+	\end{calstable}
+}
 
 \end{document}
