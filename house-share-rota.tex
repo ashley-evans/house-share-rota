@@ -8,6 +8,10 @@
 \usepackage{arrayjob}
 \usepackage{intcalc}
 
+
+% Remove Page Numbers.
+\pagenumbering{gobble}
+
 % Function: Add Days
 \newcount\daycount
 \newcommand{\AddDays}[2]{%
@@ -67,8 +71,6 @@
 
 \foreach \i in {0,...,\intcalcSub{\TotalPagesToPrint}{1}}%
 {
-	% Remove Page Number
-	\thispagestyle{empty}
 	
 	% Calculate lower bound of current rota page.
 	\newcommand{\PageLowerBound}{\intcalcMul{\i}{14}}
