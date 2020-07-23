@@ -1,5 +1,6 @@
 \documentclass[DIV=13, landscape]{scrartcl}
 \usepackage{graphicx, cals}
+\usepackage{xcolor}
 \usepackage[british]{babel}
 \usepackage[useregional, calc]{datetime2}
 \usepackage{pgffor}
@@ -55,6 +56,24 @@
 
 \makeatletter
 
+% Define Background swaps
+\newcommand{\bglightgray}{
+	\ifx\cals@bgcolor\empty
+		\def\cals@bgcolor{gray!15}
+	\else 
+		\def\cals@bgcolor{} 
+	\fi
+}
+
+\newcommand{\bgdarkgray}{
+	\ifx\cals@bgcolor\empty
+		\def\cals@bgcolor{gray!30}
+	\else 
+		\def\cals@bgcolor{} 
+	\fi
+}
+
+
 % Define cell border widths
 \def\cals@cs@width{1pt}
 \def\cals@rs@width{1pt}
@@ -93,26 +112,38 @@
 		\thead{
 			% Header row 1 
 			\brow
-				\nullcell{tlr}
+				\bglightgray \nullcell{tlr}
 				
 				\nullcell{tlb}
 				\nullcell{tb}
 				\nullcell{tb}
 				\nullcell{tb}
 				\nullcell{tb}
-				\nullcell{trb} \alignC \spancontent{\textbf{Tasks}}
+				\nullcell{trb} \alignC \spancontent{\textbf{Tasks}} \bglightgray
 			\erow
 			
-			% Header row 2
+			% Header row 2			
 			\brow
-				\nullcell{tlbr} \alignC \spancontent{\vfill \textbf{Date}}
+				\bglightgray  \nullcell{lr} \bglightgray
 				
-				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Change Bins}}} \alignC
-				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Sweep Floor}}} \alignC
-				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe Surfaces}}} \alignC
+				\bgdarkgray \nullcell{tlb}
+				\nullcell{tb}
+				\nullcell{tb}
+				\nullcell{tb}
+				\nullcell{tb}
+				\nullcell{trb} \alignC \spancontent{\textbf{Wipe surfaces}} \bgdarkgray
+			\erow
+			
+			% Header row 3
+			\brow
+				\bglightgray \nullcell{tlbr} \alignC \spancontent{\vfill \textbf{Date}} \bglightgray
+				
+				\bgdarkgray \cell{\vfil \rotatebox[origin=c]{90}{\textbf{Change bins}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Sweep floor}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Tidy lounge}}} \alignC
 				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Wipe appliances}}} \alignC
-				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Clean Microwave}}} \alignC
-				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Handle Dishwasher}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Clean microwave}}} \alignC
+				\cell{\vfil \rotatebox[origin=c]{90}{\textbf{Handle dishwasher}}} \alignC \bgdarkgray
 			\erow
 		}
 		
