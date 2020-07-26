@@ -1,0 +1,142 @@
+\documentclass[DIV=13, landscape]{scrartcl}
+\usepackage{graphicx, cals}
+\usepackage{xcolor}
+\usepackage[british]{babel}
+\usepackage[useregional, calc]{datetime2}
+\usepackage{pgffor}
+\usepackage{arrayjob}
+\usepackage{intcalc}
+\usepackage{pifont}
+\usepackage{ifthen}
+
+% Cross-Mark and Tick-Mark command.
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\tmark}{\ding{51}}
+
+% Remove Page Numbers.
+\pagenumbering{gobble}
+
+% Function: Add Days
+\newcount\daycount
+\newcommand{\AddDays}[2]{%
+	\DTMsavedate{CurrentDate}{#1}%
+	\DTMsaveddateoffsettojulianday{CurrentDate}{#2}{\daycount}%
+	\DTMsavejulianday{CurrentDate}{\number\daycount}%
+	\DTMusedate{CurrentDate}%
+}%
+
+% Function: Add Weeks
+\newcommand{\AddWeeks}[2]{%
+	\AddDays{#1}{\intcalcMul{#2}{7}}%
+}%
+
+% Update date here to change initial date of rota. ISO Format.
+% The initial date is the start date of the first rota produced (Sunday).
+\newcommand{\InitialDate}{2020-07-26}
+
+% Initial array order for initial date.
+\newarray\initials
+\readarray{initials}{V&A&F&Si&G&So&J}
+
+% Update flag here to change whether initial date is an all bin week, 1 = true/0 = false.
+\newcommand{\isInitialWeekAllBins}{1}
+
+\DTMsavedate{InitialDate}{\InitialDate}
+
+% Update date here to change start date of rota. ISO Format.
+% The start date is for the rota being currently produced.
+\newcommand{\StartDate}{2020-07-26}
+
+\DTMsavedate{StartDate}{\StartDate}
+
+% Calculate week difference between initial and start to offset row output.
+\newcount\offsetdaycount
+\DTMsaveddatediff{StartDate}{InitialDate}{\offsetdaycount}
+\newcommand{\offsetweekcount}{\intcalcDiv{\number\offsetdaycount}{7}}
+
+% Update here to change number of weeks to display past initial date.
+\newcommand{\WeeksToDisplay}{13}
+
+\begin{document}
+
+\makeatletter
+
+% Define Background swaps
+\newcommand{\bglightgray}{
+	\ifx\cals@bgcolor\empty
+		\def\cals@bgcolor{gray!15}
+	\else 
+		\def\cals@bgcolor{} 
+	\fi
+}
+
+\newcommand{\bgdarkgray}{
+	\ifx\cals@bgcolor\empty
+		\def\cals@bgcolor{gray!30}
+	\else 
+		\def\cals@bgcolor{} 
+	\fi
+}
+
+% Define cell border widths
+\def\cals@cs@width{1pt}
+\def\cals@rs@width{1pt}
+		
+% Define frame border widths
+\def\cals@framers@width{1pt}
+\def\cals@framecs@width{1pt}
+		
+% Define cell background colour to default empty
+\def\cals@bgcolor{}
+
+\textbf{Weekly rota for: \DTMusedate{StartDate} - \AddWeeks{\StartDate}{\WeeksToDisplay}}
+
+\begin{calstable}[c]
+	
+	% Handle column sizing.	
+	\colwidths{
+		{\dimexpr(\columnwidth)/78*24\relax} % Date Column Size
+		{\dimexpr(\columnwidth)/78*15\relax} % Task 1 Column Size
+		{\dimexpr(\columnwidth)/78*15\relax} % Task 2 Column Size
+		{\dimexpr(\columnwidth)/78*24\relax} % Assignment Column Size
+	}
+	
+	% Header rows
+	\thead{
+		% Header row 1 
+		\brow
+			\bglightgray \nullcell{tlr}
+			
+			\nullcell{tlb}
+			\nullcell{trb} \alignC \spancontent{\textbf{Tasks}}
+			\nullcell{tlr} \bglightgray
+		\erow
+		
+		% Header row 2
+		\brow
+			\bglightgray \nullcell{tlbr} \alignC \spancontent{\vfill \textbf{Date}} \bglightgray
+			
+			\bgdarkgray \cell{\textbf{Black Bins}} \alignC
+			\cell{\textbf{Recycling}} \alignC \bgdarkgray
+			\bglightgray \nullcell{lbr} \alignC \spancontent{\vfill \textbf{Assignment}} \bglightgray
+		\erow
+	}
+	
+	\foreach \i in {0,...,\WeeksToDisplay}
+	{
+		\newcommand{\offsetI}{\intcalcAdd{\i}{\offsetweekcount}}	
+		
+		% Calculate if week is all bin week, 1 = true/0 = false.	
+		\newcommand{\isAllBinWeek}{\intcalcSub{\isInitialWeekAllBins}{\intcalcMod{\offsetI}{2}}}		
+		
+		\brow
+			\cell{\textbf{\AddWeeks{\InitialDate}{\offsetI}}}
+	
+			\cell{\ifthenelse{\isAllBinWeek = 1}{\tmark}{\xmark}}
+			\cell{\tmark}
+			\cell{\textbf{\initials(\intcalcAdd{\intcalcMod{\intcalcAdd{0}{\intcalcMul{\offsetI}{2}}}{7}}{1}) \& \initials(\intcalcAdd{\intcalcMod{\intcalcAdd{1}{\intcalcMul{\offsetI}{2}}}{7}}{1})}}
+		\erow
+	}
+\end{calstable}
+
+\end{document}
